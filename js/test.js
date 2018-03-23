@@ -177,9 +177,9 @@ function init() {
 		scene.add(char);
 		origin = char.position.clone();
 
-		charAxes = new THREE.AxesHelper( 5 );
-		charAxes.position.set(0, -5, -2);
-		char.add(charAxes);
+		// charAxes = new THREE.AxesHelper( 5 );
+		// charAxes.position.set(0, -5, -2);
+		// char.add(charAxes);
 
 		//console.log(char.position)
 		//cameraOffset.sub(char.position);
