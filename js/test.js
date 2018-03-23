@@ -27,7 +27,7 @@ const dialogs = [
 		sides: [0, 1, 4, 5], 
 		delay: 3000, end: 5000 },
 	{ track: "clips/6.mp3",	 anim: "drawings/bounce_w_action_lines.json", 
-		sides: [0, 1, 2, 3, 4, 5], 
+		sides: [0, 1, 4, 5], 
 		delay: 3000, end: 3000 },
 	{ track: "clips/7.mp3",	 anim: "drawings/weight.json", 
 		sides: [3], 
@@ -78,6 +78,8 @@ let linesTexture; /* texture gets updated */
 let clock, mixer;
 let listener, voiceSound, voiceSource, audioLoader;
 
+let charAxes;
+
 let char;
 
 // better than mobile check, includes ipad
@@ -85,7 +87,7 @@ function onMotion(ev) {
 	window.removeEventListener('devicemotion', onMotion, false);
 	if (ev.acceleration.x != null) {
 		instructions.style.display = "block";
-		headphones.textContent = "Wear headphones.";
+		headphones.textContent = "Headphones recommended.";
 		init();
 
 		document.addEventListener('visibilitychange', () => {
@@ -94,13 +96,9 @@ function onMotion(ev) {
 	}
 }
 
-// window.addEventListener('devicemotion', onMotion, false);
-
-instructions.style.display = "block";
-init();
+window.addEventListener('devicemotion', onMotion, false);
 
 function init() {
-
 
 	clock = new THREE.Clock();
 	scene = new THREE.Scene();
@@ -121,7 +119,7 @@ function init() {
 	// controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 	camera.position.z = 3;
-	camera.position.y = 0;
+	camera.position.y = -2;
 	cameraOffset = camera.position.clone();
 
 	/* outside lines */
@@ -169,7 +167,7 @@ function init() {
 		charMat.color.setHex(0x000000);
 		charMat.skinning = true;
 		char = new THREE.SkinnedMesh(geometry, charMat);
-		char.position.set(0, -3, -2);
+		char.position.set(0, -5, -2);
 		char.scale.set(0.5,0.5,0.5);
 		char.xSpeed = 0;
 		char.zSpeed = 0;
@@ -178,6 +176,10 @@ function init() {
 			.play();
 		scene.add(char);
 		origin = char.position.clone();
+
+		charAxes = new THREE.AxesHelper( 5 );
+		charAxes.position.set(0, -5, -2);
+		char.add(charAxes);
 
 		//console.log(char.position)
 		//cameraOffset.sub(char.position);
@@ -327,7 +329,7 @@ function animate() {
     mixer.update( clock.getDelta() );
     char.position.x += char.xSpeed;
     char.position.z += char.zSpeed;
-	
+
 	camera.position.x = char.position.x + cameraOffset.x;
 	camera.position.z = char.position.z + cameraOffset.z;
     controls.update();

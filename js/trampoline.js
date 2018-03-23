@@ -87,7 +87,6 @@ function onMotion(ev) {
 		instructions.style.display = "block";
 		headphones.textContent = "Wear headphones.";
 		init();
-
 		document.addEventListener('visibilitychange', () => {
 			location.reload(); // hacky for now
 		});
