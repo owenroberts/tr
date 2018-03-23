@@ -5,9 +5,9 @@ var bkgMusic, bkgLoader;
 
 let restart = false;
 
-const idles = [0,1,2,3,4];
-const walks = [12, 13, 14, 15];
-const talks = [6,7,8,9];
+const idles = [2,3,5,6,7];
+const walks = [18, 19, 20, 21];
+const talks = [12,13,14,15];
 
 /* sides  0 front  1 back  2 top  3 bottom  4 right  5 left*/
 const dialogs = [
@@ -21,7 +21,7 @@ const dialogs = [
 		sides: [0, 1, 4, 5], 
 		delay: 3000, end: 3000},
 	{ track: "clips/4.mp3",	 anim: "drawings/tramp.json", 
-		sides: [0, 1, 4, 5], 
+		sides: [0, 1, 3, 4, 5], 
 		delay: 3000, end: 4000 },
 	{ track: "clips/5.mp3",  anim: "drawings/hiding.json", 
 		sides: [0, 1, 4, 5], 
@@ -35,7 +35,7 @@ const dialogs = [
 	{ track: "clips/8.mp3",	 anim: "drawings/shadow.json", 
 		sides: [3], 
 		delay: 3000, end: 4000 },
-	{ track: "clips/9.mp3",	 anim: "drawings/woman.json", 
+	{ track: "clips/9.mp3",	 anim: "drawings/woman_w_eyes.json", 
 		sides: [0, 1, 4, 5], 
 		delay: 3000, end: 3000 },
 	{ track: "clips/10.mp3", anim: "drawings/house.json", 
@@ -54,10 +54,10 @@ const dialogs = [
 		sides: [0, 1, 4, 5], 
 		delay: 3000, end: 5000 },
 	{ track: "clips/15.mp3", anim: "drawings/augustine.json", 
-		sides: [0, 1], 
+		sides: [0, 1, 4], 
 		delay: 3000, end: 5000 },
-	{ track: "clips/16.mp3", anim: "drawings/red.json", 
-		sides: [1], 
+	{ track: "clips/16.mp3", anim: "drawings/red_lines.json", 
+		sides: [0,1,2,3,4,5], 
 		delay: 3000, end: 5000 }
 ];
 
@@ -81,6 +81,10 @@ let listener, voiceSound, voiceSource, audioLoader;
 let charAxes;
 
 let char;
+const charSpeed = {
+	min: 0.3,
+	max: 0.3
+}
 
 // better than mobile check, includes ipad
 function onMotion(ev) {
@@ -118,8 +122,8 @@ function init() {
 	controls = new THREE.DeviceOrientationControls( camera );
 	// controls = new THREE.OrbitControls( camera, renderer.domElement );
 
-	camera.position.z = 3;
-	camera.position.y = -2;
+	camera.position.z = 2.5;
+	camera.position.y = -1.5;
 	cameraOffset = camera.position.clone();
 
 	/* outside lines */
@@ -176,18 +180,6 @@ function init() {
 			.play();
 		scene.add(char);
 		origin = char.position.clone();
-
-		// charAxes = new THREE.AxesHelper( 5 );
-		// charAxes.position.set(0, -5, -2);
-		// char.add(charAxes);
-
-		//console.log(char.position)
-		//cameraOffset.sub(char.position);
-		//console.log(char.position)
-		//console.log(camera.position);
-		//console.log(cameraOffset);
-
-		//controls.target = char.position;
 
 		instructions.textContent = "Tap to play";
 		function start() {
@@ -285,7 +277,7 @@ function animate() {
 						document.getElementById("hotdogs").style.display = "block";
 						nextClip = false;
 						mixer.stopAllAction();
-						const endAnim = [1,2,3,4][Cool.randomInt(0,3)];
+						const endAnim = [3, 6, 7][Cool.randomInt(0,2)];
 						mixer.clipAction(char.geometry.animations[endAnim], char).play();
 						char.xSpeed = 0;
 						char.zSpeed = 0;
@@ -305,11 +297,11 @@ function animate() {
 				const walk = walks[Math.floor(Math.random() * walks.length)];
 				mixer.clipAction(char.geometry.animations[walk], char).play();
 				if (char.position.distanceTo(origin) > 10) {
-					char.xSpeed = char.position.x > origin.x ? Cool.random(-0.02, 0) : Cool.random(0, 0.02);
-					char.zSpeed = char.position.z > origin.z ? Cool.random(-0.02, 0) : Cool.random(0, 0.02);
+					char.xSpeed = char.position.x > origin.x ? Cool.random(-charSpeed.min, 0) : Cool.random(0, charSpeed.min);
+					char.zSpeed = char.position.z > origin.z ? Cool.random(-charSpeed.min, 0) : Cool.random(0, charSpeed.min);
 				} else {
-					char.xSpeed = Cool.random(-0.02, 0.02);
-					char.zSpeed = Cool.random(-0.02, 0.03);
+					char.xSpeed = Cool.random(-charSpeed.min, charSpeed.min);
+					char.zSpeed = Cool.random(-charSpeed.min, charSpeed.min);
 				}
 				const vec = new THREE.Vector3(
 					char.position.x + char.xSpeed, 
