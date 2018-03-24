@@ -5,9 +5,9 @@ var bkgMusic, bkgLoader;
 
 let restart = false;
 
-const idles = [2,3,5,6,7];
-const walks = [18, 19, 20, 21];
-const talks = [12,13,14,15];
+const idles = [2, 3, 5, 6, 7];
+const walks = [20, 21, 22, 23];
+const talks = [12, 13, 14, 16, 17];
 
 /* sides  0 front  1 back  2 top  3 bottom  4 right  5 left*/
 const dialogs = [
@@ -89,11 +89,10 @@ const charSpeed = {
 // better than mobile check, includes ipad
 function onMotion(ev) {
 	window.removeEventListener('devicemotion', onMotion, false);
-	if (ev.acceleration.x != null) {
+	if (ev.acceleration.x != null || ev.accelerationIncludingGravity.x != null) {
 		instructions.style.display = "block";
 		headphones.textContent = "Headphones recommended.";
 		init();
-
 		document.addEventListener('visibilitychange', () => {
 			location.reload(); // hacky for now
 		});
