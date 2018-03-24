@@ -276,7 +276,7 @@ function animate() {
 						document.getElementById("hotdogs").style.display = "block";
 						nextClip = false;
 						mixer.stopAllAction();
-						const endAnim = [3, 6, 7][Cool.randomInt(0,2)];
+						const endAnim = [3, 6, 8][Cool.randomInt(0,2)];
 						mixer.clipAction(char.geometry.animations[endAnim], char).play();
 						char.xSpeed = 0;
 						char.zSpeed = 0;
