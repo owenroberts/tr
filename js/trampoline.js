@@ -288,7 +288,7 @@ function end() {
 		instructions.style.display = 'block';
 		startButton.textContent = "Tap to play again";
 		instructions.textContent = "End of part 2";
-		document.getElementById("hotdogs").style.display = "block";
+		document.getElementById("hotdogs-link").style.display = "block";
 		mixer.stopAllAction();
 		const endAnim = [3, 6, 8][Cool.randomInt(0,2)];
 		mixer.clipAction(char.geometry.animations[endAnim], char).play();
