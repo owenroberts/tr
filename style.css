@@ -21,7 +21,7 @@ body {
 	background-color: rgba(0,0,0,0.5);
 	color:white;
 	text-align: center;
-	padding: 2em 0;
+	/*padding: 2em 0;*/
 	font-family: avenir;
 }
 #start-button {
@@ -40,6 +40,6 @@ body {
 #hotdogs-link {
 	display: none;
 }
-#hotdogs-link a {
+a {
 	color: white;
 }
