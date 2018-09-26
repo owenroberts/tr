@@ -241,7 +241,7 @@ function talk(dialog) {
 		time = performance.now() + dialog.end;
 		nextClip = true;
 		const nextIndex = dialogs.indexOf(dialog) + 1;
-		if (nextIndex < 1/* dialogs.length*/)
+		if (nextIndex <  dialogs.length)
 			currentDialog = nextIndex;
 		else
 			end();
