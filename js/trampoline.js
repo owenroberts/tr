@@ -240,18 +240,20 @@ function talk(dialog) {
 	voiceSound.onEnded = function() {
 		voiceSound.isPlaying = false;
 		time = performance.now() + dialog.end;
-		nextClip = true;
+		walk();
+		
 		const nextIndex = dialogs.indexOf(dialog) + 1;
-		if (nextIndex <  dialogs.length)
+		if (nextIndex <  dialogs.length) {
 			currentDialog = nextIndex;
-		else
-			end();
+			nextClip = true;
+		} else
+			setTimeout(end, 4000);
 	};
 }
 
-function walk() {
+function walk(isWalk) {
 	mixer.stopAllAction();
-	if (Math.random() > 0.3) {
+	if (Math.random() > 0.3 || isWalk) {
 		const walk = walks[Math.floor(Math.random() * walks.length)];
 		mixer.clipAction(char.geometry.animations[walk], char).play();
 		if (char.position.distanceTo(origin) > 10) {
@@ -308,11 +310,13 @@ function animate() {
 	if (performance.now() > time && nextClip) {
 		let dialog = dialogs[currentDialog];
 		if (dialog.start == 1) {
-			talk(dialog);
+			talk( dialog );
 		} else {
+			if (currentDialog == 0)
+				walk( true );
 			dialog.start = 1;
 			time += dialog.delay;
-			walk();
+			// walk();
 		}
 	}
 
