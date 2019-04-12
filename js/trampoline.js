@@ -89,6 +89,7 @@ function onMotion(ev) {
 	if (ev.acceleration.x != null || ev.accelerationIncludingGravity.x != null) {
 		startButton.style.display = "block";
 		instructions.textContent = "Headphones recommended.  Rotate phone to view.";
+		console.log(document.getElementById('desktop'));
 		document.getElementById('phone').style.display = 'block';
 		document.getElementById('desktop').remove();
 		init();
