@@ -89,7 +89,6 @@ function onMotion(ev) {
 	if (ev.acceleration.x != null || ev.accelerationIncludingGravity.x != null) {
 		startButton.style.display = "block";
 		instructions.textContent = "Headphones recommended.  Rotate phone to view.";
-		console.log(document.getElementById('desktop'));
 		document.getElementById('phone').style.display = 'block';
 		document.getElementById('desktop').remove();
 		init();
@@ -163,8 +162,17 @@ function init() {
 		charMat.color.setHex(0x000000);
 		charMat.skinning = true;
 		char = new THREE.SkinnedMesh(geometry, charMat);
-		char.position.set(0, -5, -2);
-		char.scale.set(0.5,0.5,0.5);
+
+		// change orientation for android
+		if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
+			char.position.set( 2, -5, 2 );
+			char.rotation.set( 0, -Math.PI/2, 0 );
+			cameraOffset.x -= char.position.x;
+			cameraOffset.z -= char.position.z;
+		} else {
+			char.position.set( 0, -5, -2 );
+		}
+		char.scale.set( 0.5, 0.5, 0.5 );
 		char.xSpeed = 0;
 		char.zSpeed = 0;
 		char.add(voiceSound);
