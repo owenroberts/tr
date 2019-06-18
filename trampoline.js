@@ -87,16 +87,28 @@ const charSpeed = { min: 0.3, max: 0.3 }
 function onMotion(ev) {
 	window.removeEventListener('devicemotion', onMotion, false);
 	if (ev.acceleration.x != null || ev.accelerationIncludingGravity.x != null) {
-		startButton.style.display = "block";
-		instructions.textContent = "Headphones recommended.  Rotate phone to view.";
-		document.getElementById('phone').style.display = 'block';
-		document.getElementById('desktop').remove();
-		init();
+		launch();
 	}
 }
 window.addEventListener('devicemotion', onMotion, false);
 if (document.getElementById('desktop'))
 	document.getElementById('desktop').style.opacity = 1; 
+
+let touchControls = false;
+if (location.search.split('?')[1].split('=')[0] == 'touch') {
+	touchControls = true;
+	launch();
+}
+
+
+function launch() {
+	startButton.style.display = "block";
+	instructions.innerHTML = "Headphones recommended." 
+	if (!touchControls) instructions.innerHTML += "<br> Rotate phone to view.";
+	document.getElementById('phone').style.display = 'block';
+	document.getElementById('desktop').remove();
+	init();
+}
 
 function init() {
 	clock = new THREE.Clock();
@@ -114,7 +126,7 @@ function init() {
 	});
 
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
-	controls = new THREE.DeviceOrientationControls( camera );
+	if (!touchControls) controls = new THREE.DeviceOrientationControls( camera );
 	camera.position.z = 2.5;
 	camera.position.y = -1.5;
 	cameraOffset = camera.position.clone();
@@ -188,9 +200,11 @@ function init() {
 }
 
 function start() {
-	fullscreen();
+	// fullscreen();
 	if (document.getElementById('phone'))
 		document.getElementById('phone').remove();
+
+	if (touchControls) setupTouchControls();
 
 	if (restart) {
 		currentDialog = 0;
@@ -338,7 +352,7 @@ function animate() {
     char.position.z += char.zSpeed;
 	camera.position.x = char.position.x + cameraOffset.x;
 	camera.position.z = char.position.z + cameraOffset.z;
-    controls.update();
+   	if (!touchControls) controls.update();
    	// renderer.render(scene, camera);
    	effect.render( scene, camera );
 }
