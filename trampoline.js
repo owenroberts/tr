@@ -87,7 +87,7 @@ const charSpeed = { min: 0.3, max: 0.3 }
 function onMotion(ev) {
 	window.removeEventListener('devicemotion', onMotion, false);
 	if (ev.acceleration.x != null || ev.accelerationIncludingGravity.x != null) {
-		launch();
+		if (!touchControls) launch();
 	}
 }
 window.addEventListener('devicemotion', onMotion, false);
@@ -95,9 +95,11 @@ if (document.getElementById('desktop'))
 	document.getElementById('desktop').style.opacity = 1; 
 
 let touchControls = false;
-if (location.search.split('?')[1].split('=')[0] == 'touch') {
-	touchControls = true;
-	launch();
+if (location.search) {
+	if (location.search.split('?')[1].split('=')[0] == 'touch') {
+		touchControls = true;
+		launch();
+	}
 }
 
 
@@ -106,7 +108,7 @@ function launch() {
 	instructions.innerHTML = "Headphones recommended." 
 	if (!touchControls) instructions.innerHTML += "<br> Rotate phone to view.";
 	document.getElementById('phone').style.display = 'block';
-	document.getElementById('desktop').remove();
+	if (document.getElementById('desktop')) document.getElementById('desktop').remove();
 	init();
 }
 
@@ -203,7 +205,6 @@ function start() {
 	// fullscreen();
 	if (document.getElementById('phone'))
 		document.getElementById('phone').remove();
-
 	if (touchControls) setupTouchControls();
 
 	if (restart) {
